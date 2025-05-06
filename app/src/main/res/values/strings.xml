@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Track My Location</string>
+    <string name="coordinates">Coordinates: (%1$s, %2$s)</string>
+    <string name="coordinates_waiting">Coordinates: (waiting...)</string>
+    <string name="google_maps_is_not_installed">Google Maps is not installed</string>
+    <string name="location_not_available">Location not available</string>
+    <string name="open_in_google_maps">Open in Google Maps</string>
+    <string name="stop_tracking">Stop tracking</string>
+    <string name="start">Start</string>
+</resources>
