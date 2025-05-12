@@ -3,11 +3,13 @@ package com.lizwin.trackmylocation.presentation.location
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,17 +26,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.lizwin.trackmylocation.R
+import com.lizwin.trackmylocation.service.LocationForegroundService
 import com.lizwin.trackmylocation.service.LocationService
 import com.lizwin.trackmylocation.ui.theme.TrackMyLocationTheme
+import com.lizwin.trackmylocation.util.LocationServiceUtil
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var locationViewModel: LocationViewModel
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val activity = this
 
         ActivityCompat.requestPermissions(
             this,
@@ -67,10 +74,16 @@ class MainActivity : ComponentActivity() {
                     ) {
                         Button(
                             onClick = {
-                                Intent(applicationContext, LocationService::class.java).apply {
+                                LocationServiceUtil.checkAndRequestPermission(context = this@MainActivity, activity = activity)
+                                /*Intent(applicationContext, LocationService::class.java).apply {
                                     action = LocationService.START
                                     startService(this)
-                                }
+                                }*/
+                                val intent = Intent(
+                                    applicationContext,
+                                    LocationForegroundService::class.java
+                                )
+                                ContextCompat.startForegroundService(applicationContext, intent)
                             }
                         ) {
                             Text(stringResource(R.string.start))
